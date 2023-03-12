@@ -26,6 +26,8 @@ def get_event():
     global event
     while True:
         event = keyboard.read_key()
+        if event == "up":
+            sys.exit()
 
 def left_key():
     '''Left key event function:
@@ -50,33 +52,38 @@ def end_game():
     Ends the game'''
     global gameinprogress
     gameinprogress = False
-    sys.exit()
+
 
 event = None
     
 event_thread = threading.Thread(target=get_event)
 
 event_thread.start()
- 
-while gameinprogress:
-    # print(pieceposition)
-    # Monitoring the pieceposition
 
-    print(*gameboard, sep='')
-    
-    time.sleep(0.10)
-    
-    # print(event)
-    # Monitoring the event (pressed key)
+def main():
+    global event
+    while gameinprogress:
+        # print(pieceposition)
+        # Monitoring the pieceposition
 
-    match event:
-        case "left":
-            left_key()
-        case "right":
-            right_key()
-        case "up":
-            end_game()
+        print(*gameboard, sep='')
+        
+        time.sleep(0.10)
+        
+        # print(event)
+        # Monitoring the event (pressed key)
 
-    event = None
-    # Set the event to None to prevent
-    #   the gamepiece from moving indefinitely
+        match event:
+            case "left":
+                left_key()
+            case "right":
+                right_key()
+            case "up":
+                end_game()
+
+        event = None
+        # Set the event to None to prevent
+        #   the gamepiece from moving indefinitely
+
+if __name__ == "__main__":
+    main()
